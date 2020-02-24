@@ -88,6 +88,18 @@ func groupByMulti(entries interface{}, key, sep string) (map[string][]interface{
 	})
 }
 
+func mergeMaps(m1, m2 map[string][]interface{}) (map[string][]interface{}, error)  {
+	for ia, va := range m1 {
+		if it, ok := m2[ia]; ok {
+			va = it
+		}
+
+		m2[ia] = va
+	}
+
+	return m2, nil
+}
+
 // groupBy groups a generic array or slice by the path property key
 func groupBy(entries interface{}, key string) (map[string][]interface{}, error) {
 	return generalizedGroupByKey("groupBy", entries, key, func(groups map[string][]interface{}, value interface{}, v interface{}) {
@@ -430,6 +442,7 @@ func newTemplate(name string) *template.Template {
 		"groupBy":                groupBy,
 		"groupByKeys":            groupByKeys,
 		"groupByMulti":           groupByMulti,
+		"mergeMaps":			  mergeMaps,
 		"groupByLabel":           groupByLabel,
 		"hasPrefix":              hasPrefix,
 		"hasSuffix":              hasSuffix,
